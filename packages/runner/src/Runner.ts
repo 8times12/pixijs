@@ -1,3 +1,7 @@
+import { destroyable, destroyer } from '@pixi/utils';
+
+import type { IDestroyable } from '@pixi/utils';
+
 /**
  * A Runner is a highly performant and simple alternative to signals. Best used in situations
  * where events are dispatched to many objects at high frequency (say every frame!)
@@ -43,7 +47,7 @@
  * ```
  * @memberof PIXI
  */
-export class Runner
+export class Runner implements IDestroyable
 {
     public items: any[];
     private _name: string;
@@ -65,6 +69,7 @@ export class Runner
      * @param {...any} params - (optional) parameters to pass to each listener
      */
     /*  eslint-enable jsdoc/require-param, jsdoc/check-param-names */
+    @destroyable
     public emit(a0?: unknown, a1?: unknown, a2?: unknown, a3?: unknown,
         a4?: unknown, a5?: unknown, a6?: unknown, a7?: unknown): this
     {
@@ -117,6 +122,7 @@ export class Runner
      * The scope used will be the object itself.
      * @param {any} item - The object that will be listening.
      */
+    @destroyable
     public add(item: unknown): this
     {
         if ((item as any)[this._name])
@@ -133,6 +139,7 @@ export class Runner
      * Remove a single listener from the dispatch queue.
      * @param {any} item - The listener that you would like to remove.
      */
+    @destroyable
     public remove(item: unknown): this
     {
         const index = this.items.indexOf(item);
@@ -150,12 +157,14 @@ export class Runner
      * Check to see if the listener is already in the Runner
      * @param {any} item - The listener that you would like to check.
      */
+    @destroyable
     public contains(item: unknown): boolean
     {
         return this.items.includes(item);
     }
 
     /** Remove all listeners from the Runner */
+    @destroyable
     public removeAll(): this
     {
         this.ensureNonAliasedItems();
@@ -165,17 +174,19 @@ export class Runner
     }
 
     /** Remove all references, don't use after this. */
+    @destroyer
     public destroy(): void
     {
         this.removeAll();
-        this.items = null;
-        this._name = null;
+        this.items = [];
+        this._name = '';
     }
 
     /**
      * `true` if there are no this Runner contains no listeners
      * @readonly
      */
+
     public get empty(): boolean
     {
         return this.items.length === 0;

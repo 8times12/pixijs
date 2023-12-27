@@ -24,8 +24,7 @@ describe('Runner', () =>
         complete.emit();
         expect(callback).toBeCalledTimes(3);
         complete.destroy();
-        expect(!complete.items).toBe(true);
-        expect(!complete.name).toBe(true);
+        expect('_destroyed' in complete && complete['_destroyed']).toBe(true);
     });
 
     it('should implement emit with arguments', () =>

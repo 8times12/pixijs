@@ -101,6 +101,7 @@ export * from './data/pow2';
 export * from './data/removeItems';
 export * from './data/sign';
 export * from './data/uid';
+export * from './decorator/destroy';
 export * from './logging/deprecation';
 export * from './media/BoundingBox';
 export * from './media/caches';
